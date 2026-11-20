@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+  <meta charset="UTF-8">
+  <title>Kiosk Delt Skjerm</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background-color: #000000;
+    }
+    .container {
+      display: flex;
+      flex-direction: row; /* Bytt til 'column' for topp/bunn-deling */
+      width: 100vw;
+      height: 100vh;
+    }
+    iframe {
+      width: 50%;
+      height: 100%;
+      border: none;
+    }
+    iframe:first-child {
+      border-right: 2px solid #222222;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Venstre side -->
+    <iframe id="frame-venstre" src="https://docs.google.com/presentation/d/e/2PACX-1vS_Q-PjXoY02tctpWFltVewtlbhQlgmLphVpTVOqPCbEGZOVHMyHxDgW9SgYktkhrTBkle8q-ukx2Ef/pub?start=true&loop=true&delayms=60000" allow="autoplay; fullscreen"></iframe>
+    
+    <!-- Høyre side -->
+    <iframe id="frame-hoyre" src="https://docs.google.com/presentation/d/e/2PACX-1vQAPjTKGqafidzrZsDpTtXUkjE1BdU3hDN2W8VeeXTSa06H9RL-fvwg9aINUKZLjUwMjGaQFsQ4QDD5/pub?start=true&loop=true&delayms=3000" allow="autoplay; fullscreen"></iframe>
+  </div>
+
+  <script>
+    // Konfigurasjon for oppdatering (5 minutter = 300 000 millisekunder)
+    const OPPDATERINGS_INTERVALL = 5 * 60 * 1000; 
+
+    // Sett til true for å oppdatere, eller false for å la siden stå i ro (f.eks. en video)
+    const OPPDATER_VENSTRE = true;
+    const OPPDATER_HOYRE = true;
+
+    function oppdaterRamme(id) {
+      const ramme = document.getElementById(id);
+      if (ramme) {
+        // Leser og setter src på nytt for å tvinge frem ny innlasting uten sikkerhetsfeil
+        const gjeldendeUrl = ramme.src;
+        ramme.src = gjeldendeUrl;
+      }
+    }
+
+    setInterval(() => {
+      if (OPPDATER_VENSTRE) oppdaterRamme('frame-venstre');
+      if (OPPDATER_HOYRE) oppdaterRamme('frame-hoyre');
+    }, OPPDATERINGS_INTERVALL);
+  </script>
+</body>
+</html>
